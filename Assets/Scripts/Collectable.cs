@@ -37,43 +37,30 @@ public class Collectable : MonoBehaviour
     }
 
     private void HandleCollection()
-    { 
-        // 1. Find the player's inventory component
-        PlayerInventory inv = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
+    {
+        PlayerInventory inv = GameObject.FindGameObjectWithTag(playerTag).GetComponent<PlayerInventory>();
+
+        // Automatically detect item type based on the object's Tag
+        if (gameObject.CompareTag("Soul")) itemType = ItemType.Soul;
+        if (gameObject.CompareTag("Egg")) itemType = ItemType.Egg;
+        if (gameObject.CompareTag("Gloomroot")) itemType = ItemType.Gloomroot;
 
         if (inv != null)
         {
-            // 2. Tell the inventory to add 1 of whatever this item is
             inv.UpdateCount(itemType, 1);
         }
-    
-        // 2. This "Switch" checks which item type you selected in the Inspector
-        // and sets the correct boolean to true.
+
+        // Update the checkboxes (static bools)
         switch (itemType)
         {
-            case ItemType.Soul:
-                hasSoul = true;
-                break;
-            case ItemType.Egg:
-                hasEgg = true;
-                break;
-            case ItemType.Gloomroot:
-                hasGloomroot = true;
-                break;
-            case ItemType.Biscuit:
-                hasBiscuit = true;
-                break;
-            case ItemType.LiquidFire:
-                hasLiquidFire = true;
-                break;
-            case ItemType.Feed:
-                hasFeed = true;
-                break;
-            case ItemType.Obol:
-                hasObol = true;
-                break;
+            case ItemType.Soul: hasSoul = true; break;
+            case ItemType.Egg: hasEgg = true; break;
+            case ItemType.Gloomroot: hasGloomroot = true; break;
+        }
 
-        }       
+        Debug.Log(gameObject.tag + " collected and tagged correctly!");
+        Destroy(gameObject);
+       
 
         Debug.Log(itemType + " collected! Logic updated.");
 
